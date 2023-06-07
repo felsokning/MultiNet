@@ -1,6 +1,7 @@
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - refs/tags/*
 
 jobs:
   push_to_registry:
