@@ -19,7 +19,7 @@ jobs:
         echo "builddate=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
       id: dateversion
     - name: Build Docker Image
-      run: docker build felsokning/multinet:${{ github.sha }} .
+      run: docker build -t felsokning/multinet:${{ github.sha }} .
     - name: Tag Docker Image (Git Tag)
       run: docker tag felsokning/multinet:${{ github.sha }} felsokning/multinet:${{ github.ref_name }}
     - name: Tag Docker Image (Date)
