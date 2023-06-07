@@ -32,4 +32,4 @@ jobs:
         username: felsokning
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Publish to DockerHub
-      run: docker push felsokning/multinet:${{ github.ref_name }}
+      run: docker push --all-tags felsokning/multinet:${{ github.ref_name }}
