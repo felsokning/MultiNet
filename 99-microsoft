@@ -1,0 +1,3 @@
+Package: dotnet* aspnet* netstandard* azure*
+Pin: origin packages.microsoft.com
+Pin-Priority: 1001
