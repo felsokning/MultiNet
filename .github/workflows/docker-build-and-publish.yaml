@@ -17,4 +17,4 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Publish to DockerHub
-      run: docker push docker/multinet:${{ github.sha }}
+      run: docker push docker/felsokning/multinet:${{ github.sha }}
