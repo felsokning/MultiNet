@@ -17,10 +17,42 @@ RUN apt-get update \
     && dpkg -i packages-microsoft-prod.deb \
     && rm -f packages-microsoft-prod.deb \
     && apt-get update \
-    # Install .NET6.0, .NET7.0, & PowerShell
-    && apt-get install dotnet-runtime-6.0 aspnetcore-runtime-6.0 dotnet-sdk-6.0 dotnet-runtime-7.0 aspnetcore-runtime-7.0 dotnet-sdk-7.0 powershell=7.3.4-1.deb -y \
+    # Install Procump for Linux, .NET6.0, .NET7.0, & PowerShell
+    && apt-get install procdump dotnet-runtime-6.0 aspnetcore-runtime-6.0 dotnet-sdk-6.0 dotnet-runtime-7.0 aspnetcore-runtime-7.0 dotnet-sdk-7.0 powershell=7.3.4-1.deb -y \
     # Set the Default .NET SDK Version (The Current LTS)
     && dotnet new globaljson --sdk-version=${DotNetSdkVersion} \
+    # Install .NET Core 2.1
+    && wget -O dotnet-runtime-2.1.30-linux-x64.tar.gz https://download.visualstudio.microsoft.com/download/pr/84904da8-51ea-4ff2-b816-a2a16442eb7c/ebc16d3a87af8002cd2b2ea63a351db1/dotnet-runtime-2.1.30-linux-x64.tar.gz \
+    && tar -xvf dotnet-runtime-2.1.30-linux-x64.tar.gz --one-top-level \
+    && rm -f dotnet-runtime-2.1.30-linux-x64.tar.gz \
+    && mv dotnet-runtime-2.1.30-linux-x64/shared/Microsoft.NETCore.App/2.1.30 /usr/share/dotnet/shared/Microsoft.NETCore.App/ \
+    && rm -rf dotnet-runtime-2.1.30-linux-x64 \
+    && wget -O aspnetcore-runtime-2.1.30-linux-x64.tar.gz https://download.visualstudio.microsoft.com/download/pr/d6040f80-8343-4771-9c02-dbc9a35ac88a/68e74e6e46cf36fa1a50f68af6831d6d/aspnetcore-runtime-2.1.30-linux-x64.tar.gz \
+    && tar -xvf aspnetcore-runtime-2.1.30-linux-x64.tar.gz --one-top-level \
+    && rm -f aspnetcore-runtime-2.1.30-linux-x64.tar.gz \
+    && mv aspnetcore-runtime-2.1.30-linux-x64/shared/Microsoft.AspNetCore.App/2.1.30 /usr/share/dotnet/shared/Microsoft.AspNetCore.App/ \
+    && rm -rf aspnetcore-runtime-2.1.30-linux-x64 \   
+    && wget -O dotnet-sdk-2.1.818-linux-x64.tar.gz https://download.visualstudio.microsoft.com/download/pr/5797d98a-8faf-472d-925c-931ac542d3c8/e48942da88f4d9d653a7b5c0790e7724/dotnet-sdk-2.1.818-linux-x64.tar.gz \
+    && tar -xvf dotnet-sdk-2.1.818-linux-x64.tar.gz --one-top-level \
+    && rm -f dotnet-sdk-2.1.818-linux-x64.tar.gz \
+    && mv dotnet-sdk-2.1.818-linux-x64/sdk/2.1.818 /usr/share/dotnet/sdk \
+    && rm -rf dotnet-sdk-2.1.818-linux-x64 \
+    # Install .NET Core 2.2
+    && wget -O dotnet-runtime-2.2.8-linux-x64.tar.gz https://download.visualstudio.microsoft.com/download/pr/3fbca771-e7d3-45bf-8e77-cfc1c5c41810/e118d44f5a6df21714abd8316e2e042b/dotnet-runtime-2.2.8-linux-x64.tar.gz \
+    && tar -xvf dotnet-runtime-2.2.8-linux-x64.tar.gz --one-top-level \
+    && rm -f dotnet-runtime-2.2.8-linux-x64.tar.gz \
+    && mv dotnet-runtime-2.2.8-linux-x64/shared/Microsoft.NETCore.App/2.2.8 /usr/share/dotnet/shared/Microsoft.NETCore.App/ \
+    && rm -rf dotnet-runtime-2.2.8-linux-x64 \
+    && wget -O aspnetcore-runtime-2.2.8-linux-x64.tar.gz https://download.visualstudio.microsoft.com/download/pr/e716faa4-345c-45a7-bd1f-860cdf422b75/fa8e57167f3bd4bf20b8b60992cf184f/aspnetcore-runtime-2.2.8-linux-x64.tar.gz \
+    && tar -xvf aspnetcore-runtime-2.2.8-linux-x64.tar.gz --one-top-level \
+    && rm -f aspnetcore-runtime-2.2.8-linux-x64.tar.gz \
+    && mv aspnetcore-runtime-2.2.8-linux-x64/shared/Microsoft.AspNetCore.App/2.2.8 /usr/share/dotnet/shared/Microsoft.AspNetCore.App/ \
+    && rm -rf aspnetcore-runtime-2.2.8-linux-x64 \
+    && wget -O dotnet-sdk-2.2.207-linux-x64.tar.gz https://download.visualstudio.microsoft.com/download/pr/022d9abf-35f0-4fd5-8d1c-86056df76e89/477f1ebb70f314054129a9f51e9ec8ec/dotnet-sdk-2.2.207-linux-x64.tar.gz \
+    && tar -xvf dotnet-sdk-2.2.207-linux-x64.tar.gz --one-top-level \
+    && rm -f dotnet-sdk-2.2.207-linux-x64.tar.gz \
+    && mv dotnet-sdk-2.2.207-linux-x64/sdk/2.2.207 /usr/share/dotnet/sdk \
+    && rm -rf dotnet-sdk-2.2.207-linux-x64 \
     # Install .NET Core 3.0
     && wget -O dotnet-runtime-3.0.3-linux-x64.tar.gz https://download.visualstudio.microsoft.com/download/pr/6ad304ea-28a3-41c6-b30f-f0e1393f41de/83af63265fd59a8bf171417bd5134bb6/dotnet-runtime-3.0.3-linux-x64.tar.gz \
     && tar -xvf dotnet-runtime-3.0.3-linux-x64.tar.gz --one-top-level \
@@ -34,6 +66,7 @@ RUN apt-get update \
     && rm -rf aspnetcore-runtime-3.0.3-linux-x64 \
     && wget -O dotnet-sdk-3.0.103-linux-x64.tar.gz https://download.visualstudio.microsoft.com/download/pr/43f3a3bd-3df2-41e6-beca-3ec4952ca6c4/30fe7779249607d1bb3bb4b20d61a479/dotnet-sdk-3.0.103-linux-x64.tar.gz \
     && tar -xvf dotnet-sdk-3.0.103-linux-x64.tar.gz --one-top-level \
+    && rm -f dotnet-sdk-3.0.103-linux-x64.tar.gz \
     && mv dotnet-sdk-3.0.103-linux-x64/sdk/3.0.103 /usr/share/dotnet/sdk \
     && rm -rf dotnet-sdk-3.0.103-linux-x64 \
     # Install .NET Core 3.1
