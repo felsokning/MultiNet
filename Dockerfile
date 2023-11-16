@@ -1,7 +1,7 @@
 FROM scratch as builder
-ADD alpine-minirootfs-3.18.2-x86_64.tar.gz /
+ADD alpine-minirootfs-3.18.4-x86_64.tar.gz /
 
-ARG DotNetSdkVersion=6.0
+ARG DotNetSdkVersion=8.0
 ARG PowerShell_Version=7.3.6
 
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
@@ -11,8 +11,8 @@ RUN apk -U upgrade \
     && apk add --upgrade --no-cache apk-tools \
     && apk upgrade --available --no-cache \
     && apk add --no-cache aspnetcore6-runtime aspnetcore7-runtime bash ca-certificates cargo curl dotnet6-runtime \
-        dotnet6-sdk dotnet7-runtime dotnet7-sdk gcc groff icu-libs krb5-libs less libffi-dev libgcc libgdiplus libintl \
-        libssl1.1 libstdc++ make musl-dev nano ncurses-terminfo-base openssl-dev tzdata userspace-rcu wget zlib \
+        dotnet6-sdk dotnet7-runtime dotnet7-sdk gcc groff icu-libs krb5-libs less libffi-dev libgcc \
+        libgdiplus libintl libssl1.1 libstdc++ make musl-dev nano ncurses-terminfo-base openssl-dev tzdata userspace-rcu wget zlib \
     && apk add --update --no-cache tar \
     # Install .NET Core 2.1 ASP.NET Runtime
     && wget -O aspnetcore-runtime-2.1.30-linux-musl-x64.tar.gz https://download.visualstudio.microsoft.com/download/pr/12ab23c7-2178-44d6-95e8-edf01092591f/e0f3b4e0ab258cf8e10f425200422247/aspnetcore-runtime-2.1.30-linux-musl-x64.tar.gz \
@@ -104,6 +104,24 @@ RUN apk -U upgrade \
     && rm -f dotnet-sdk-5.0.408-linux-musl-x64.tar.gz \
     && mv dotnet-sdk-5.0.408-linux-musl-x64/sdk/5.0.408/ /usr/lib/dotnet/sdk \
     && rm -rf dotnet-sdk-5.0.408-linux-musl-x64 \
+    # Install .NET 8.0 ASP.NET Runtime
+    && wget -O aspnetcore-runtime-8.0.0-linux-musl-x64.tar.gz https://download.visualstudio.microsoft.com/download/pr/7aa33fc7-07fe-48c2-8e44-a4bfb4928535/3b96ec50970eee414895ef3a5b188bcd/aspnetcore-runtime-8.0.0-linux-musl-x64.tar.gz \
+    && tar zxf aspnetcore-runtime-8.0.0-linux-musl-x64.tar.gz --one-top-level \
+    && rm -f aspnetcore-runtime-8.0.0-linux-musl-x64.tar.gz \
+    && mv aspnetcore-runtime-8.0.0-linux-musl-x64/shared/Microsoft.AspNetCore.App/8.0.0/ /usr/lib/dotnet/shared/Microsoft.AspNetCore.App \
+    && rm -rf aspnetcore-runtime-8.0.0-linux-musl-x64 \
+    # Install .NET 8.0 Runtime
+    && wget -O dotnet-runtime-8.0.0-linux-musl-x64.tar.gz https://download.visualstudio.microsoft.com/download/pr/731765c8-5774-414d-8157-bf184806bca9/7a3c7add7562e1be15954a2739fefe30/dotnet-runtime-8.0.0-linux-musl-x64.tar.gz \
+    && tar zxf dotnet-runtime-8.0.0-linux-musl-x64.tar.gz --one-top-level \
+    && rm -f dotnet-runtime-8.0.0-linux-musl-x64.tar.gz \
+    && mv dotnet-runtime-8.0.0-linux-musl-x64/shared/Microsoft.NETCore.App/8.0.0/ /usr/lib/dotnet/shared/Microsoft.NETCore.App \
+    && rm -rf dotnet-runtime-8.0.0-linux-musl-x64 \
+    # Install .NET 8.0 SDK
+    && wget -O dotnet-sdk-8.0.100-linux-musl-x64.tar.gz https://download.visualstudio.microsoft.com/download/pr/40a3227f-0d20-4c23-b1a5-ecd659e3faef/fa59541ab3a35a50172ea5f81070e075/dotnet-sdk-8.0.100-linux-musl-x64.tar.gz \
+    && tar zxf dotnet-sdk-8.0.100-linux-musl-x64.tar.gz --one-top-level \
+    && rm -f dotnet-sdk-8.0.100-linux-musl-x64.tar.gz \
+    && mv dotnet-sdk-8.0.100-linux-musl-x64/sdk/8.0.100/ /usr/lib/dotnet/sdk \
+    && rm -rf dotnet-sdk-8.0.100-linux-musl-x64 \
     # Set the Default .NET SDK Version (The Current LTS)
     && dotnet new globaljson --sdk-version=${DotNetSdkVersion} \
     # Install PowerShell
