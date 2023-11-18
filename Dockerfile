@@ -7,8 +7,9 @@ ARG PowerShell_Version=7.3.6
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 ENV POWERSHELL_TELEMETRY_OPTOUT=1
 
-RUN apk -U upgrade \
-    && apk add --upgrade --no-cache apk-tools \
+RUN apk update \
+    && apk add --upgrade --no-cache apk-tools openssl \
+    && apk -U upgrade \
     && apk upgrade --available --no-cache \
     && apk add --no-cache aspnetcore6-runtime aspnetcore7-runtime bash ca-certificates cargo curl dotnet6-runtime \
         dotnet6-sdk dotnet7-runtime dotnet7-sdk gcc groff icu-libs krb5-libs less libffi-dev libgcc \
@@ -142,5 +143,15 @@ RUN apk -U upgrade \
 
 FROM scratch as finalizer
 COPY --from=builder / /
+
+# OpenSSL 3.0 disables UnsafeLegacyRenegotiation by default, must re-enable it for some endpoints (see https://github.com/dotnet/runtime/issues/80641)
+RUN sed -i 's/providers = provider_sect/providers = provider_sect\n\
+ssl_conf = ssl_sect\n\
+\n\
+[ssl_sect]\n\
+system_default = system_default_sect\n\
+\n\
+[system_default_sect]\n\
+Options = UnsafeLegacyRenegotiation/' /etc/ssl/openssl.cnf
 
 CMD [ "/bin/bash" ]
