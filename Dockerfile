@@ -1,8 +1,8 @@
 FROM scratch as builder
-ADD alpine-minirootfs-3.18.4-x86_64.tar.gz /
+ADD alpine-minirootfs-3.19.1-x86_64.tar.gz /
 
 ARG DotNetSdkVersion=8.0
-ARG PowerShell_Version=7.3.6
+ARG PowerShell_Version=7.4.1
 
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 ENV POWERSHELL_TELEMETRY_OPTOUT=1
@@ -12,8 +12,9 @@ RUN apk update \
     && apk -U upgrade \
     && apk upgrade --available --no-cache \
     && apk add --no-cache aspnetcore6-runtime aspnetcore7-runtime bash ca-certificates cargo curl dotnet6-runtime \
-        dotnet6-sdk dotnet7-runtime dotnet7-sdk gcc groff icu-libs krb5-libs less libffi-dev libgcc \
-        libgdiplus libintl libssl1.1 libstdc++ make musl-dev nano ncurses-terminfo-base openssl-dev tzdata userspace-rcu wget zlib \
+        dotnet7-runtime dotnet6-sdk dotnet7-sdk gcc groff icu-libs krb5-libs less libffi-dev libgcc \
+        libgdiplus libintl libssl3 libstdc++ make musl-dev nano ncurses-terminfo-base openssl-dev tzdata  \
+        userspace-rcu wget zlib \
     && apk add --update --no-cache tar \
     # Install .NET Core 2.1 ASP.NET Runtime
     && wget -O aspnetcore-runtime-2.1.30-linux-musl-x64.tar.gz https://download.visualstudio.microsoft.com/download/pr/12ab23c7-2178-44d6-95e8-edf01092591f/e0f3b4e0ab258cf8e10f425200422247/aspnetcore-runtime-2.1.30-linux-musl-x64.tar.gz \
@@ -127,7 +128,7 @@ RUN apk update \
     && dotnet new globaljson --sdk-version=${DotNetSdkVersion} \
     # Install PowerShell
     && apk -X https://dl-cdn.alpinelinux.org/alpine/edge/main add --no-cache lttng-ust \
-    && wget -O /tmp/powershell.tar.gz https://github.com/PowerShell/PowerShell/releases/download/v${PowerShell_Version}/powershell-${PowerShell_Version}-linux-alpine-x64.tar.gz \
+    && wget -O /tmp/powershell.tar.gz https://github.com/PowerShell/PowerShell/releases/download/v${PowerShell_Version}/powershell-${PowerShell_Version}-linux-musl-x64.tar.gz \
     && mkdir -p /opt/microsoft/powershell/7 \
     && tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7 \
     && chmod +x /opt/microsoft/powershell/7/pwsh \
