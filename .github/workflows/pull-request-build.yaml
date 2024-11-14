@@ -1,0 +1,15 @@
+name: Build
+
+on:
+    pull_request:
+        types: [opened, reopened, edited, synchronize, ready_for_review]
+
+jobs:
+  push_to_registry:
+    name: Build and publish
+    runs-on: ubuntu-24.04
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v3
+    - name: Build Docker Image
+      run: docker build -t felsokning/multinet:${{ github.sha }} .
