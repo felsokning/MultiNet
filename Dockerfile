@@ -1,5 +1,7 @@
 FROM ubuntu:22.04
 
+ENV PATH=$PATH:/root/.dotnet
+
 RUN apt-get update \
     && apt-get dist-upgrade -y \
     && apt-get upgrade -y \
@@ -17,5 +19,4 @@ RUN apt-get update \
     && ./dotnet-install.sh --channel 5.0 \
     && ./dotnet-install.sh --channel 3.1 \
     && ./dotnet-install.sh --channel 3.0 \
-    && export PATH=$PATH:$HOME/.dotnet \
     && apt-get remove wget -y 
