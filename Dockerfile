@@ -19,4 +19,4 @@ RUN apt-get update \
     && ./dotnet-install.sh --channel 5.0 \
     && ./dotnet-install.sh --channel 3.1 \
     && ./dotnet-install.sh --channel 3.0 \
-    && apt-get remove wget -y 
+    && apt-get remove wget -y
