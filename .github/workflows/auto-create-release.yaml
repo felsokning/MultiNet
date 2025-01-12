@@ -1,0 +1,26 @@
+name: Auto Taginator 9000
+
+on:
+  schedule:
+    - cron: 0 0 * * *
+
+jobs:
+  create_release:
+    name: Create Release Tag
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Calculate New Tag
+        id: calculatenewtag
+        shell: pwsh
+        run: |
+          $versionString = git tag --list | Sort-Object -Descending | Select-Object -First 1
+          $versionParsed = [System.Version]::Parse($versionString)
+          $newTagVersion = [System.Version]::new($versionParsed.Major, $versionParsed.Minor, $versionParsed.Build + 1)
+          $newTagVersionString = $newTagVersion.ToString()
+          Write-Output "tag=$($newTagVersionString)" >> $env:GITHUB_OUTPUT
+      - name: Create Tag Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tag: tag=${{ steps.calculatenewtag.outputs.tag }}
+        run: |
+          gh release create "$tag" --repo="$GITHUB_REPOSITORY" --title="${GITHUB_REPOSITORY#*/} ${tag#v}" --generate-notes
