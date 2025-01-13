@@ -16,7 +16,7 @@ jobs:
         id: calculatenewtag
         shell: pwsh
         run: |
-          Set-Location -Path "/home/runner/work/MultiNet/"
+          Set-Location -Path "/home/runner/work/MultiNet/MultiNet/"
           $describedTag = git describe --tags
           $versionString = $describedTag.Substring(0, $describedTag.IndexOf("-"))
           $versionParsed = [System.Version]::Parse($versionString)
