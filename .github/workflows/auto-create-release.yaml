@@ -1,6 +1,7 @@
 name: Auto Taginator 9000
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: 0 0 * * *
 
@@ -9,6 +10,8 @@ jobs:
     name: Create Release Tag
     runs-on: ubuntu-24.04
     steps:
+      - name: Check out code
+        uses: actions/checkout@main
       - name: Calculate New Tag
         id: calculatenewtag
         shell: pwsh
