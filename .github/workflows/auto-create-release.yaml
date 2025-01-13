@@ -16,7 +16,7 @@ jobs:
         id: calculatenewtag
         shell: pwsh
         run: |
-          Set-Location -Path "/home/runner/work/MultiNet/MultiNet/"
+          Set-Location -Path "/home/runner/work/MultiNet/"
           $PWD
           ls
           $versionString = git tag --list | Sort-Object -Descending | Select-Object -First 1
