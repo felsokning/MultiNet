@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@main
+        with:
+          fetch-tags: true
       - name: Calculate New Tag
         id: calculatenewtag
         shell: pwsh
