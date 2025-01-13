@@ -17,6 +17,8 @@ jobs:
         shell: pwsh
         run: |
           Set-Location -Path "/home/runner/work/MultiNet/MultiNet/"
+          $PWD
+          ls
           $versionString = git tag --list | Sort-Object -Descending | Select-Object -First 1
           $versionParsed = [System.Version]::Parse($versionString)
           $newTagVersion = [System.Version]::new($versionParsed.Major, $versionParsed.Minor, $versionParsed.Build + 1)
