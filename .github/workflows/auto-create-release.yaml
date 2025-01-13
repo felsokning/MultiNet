@@ -12,11 +12,15 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@main
+        with:
+          fetch-tags: true
       - name: Calculate New Tag
         id: calculatenewtag
         shell: pwsh
         run: |
-          $versionString = git tag --list | Sort-Object -Descending | Select-Object -First 1
+          Set-Location -Path "/home/runner/work/MultiNet/MultiNet/"
+          $describedTag = git describe --tags
+          $versionString = $describedTag.Substring(0, $describedTag.IndexOf("-"))
           $versionParsed = [System.Version]::Parse($versionString)
           $newTagVersion = [System.Version]::new($versionParsed.Major, $versionParsed.Minor, $versionParsed.Build + 1)
           $newTagVersionString = $newTagVersion.ToString()
