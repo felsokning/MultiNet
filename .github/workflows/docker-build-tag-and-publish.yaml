@@ -3,7 +3,8 @@ name: Build and Publish Docker Image
 # Required Since Release Creation in GitHub (itself) doesn't create a push (not remote)
 on:
   release:
-    types: [published]
+    types:
+    - created
 
 jobs:
   push_to_registry:
