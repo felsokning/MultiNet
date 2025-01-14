@@ -21,8 +21,18 @@ jobs:
         run: |
           Set-Location -Path "/home/runner/work/MultiNet/MultiNet/"
           $describedTag = git describe --tags
-          $versionString = $describedTag.Substring(0, $describedTag.IndexOf("-"))
-          $versionParsed = [System.Version]::Parse($versionString)
+          # Need to hunt if it's a tag + commits or just tag
+          $versionString = [string]::Empty
+          if ($describedTag.Contains("-"))
+          {
+            $versionString = $describedTag.Substring(0, $describedTag.IndexOf("-"))
+          }
+          else
+          {
+            $versionString = $describedTag.ToString()
+          }
+          
+          $versionParsed = [System.Version]::Parse($versionString)          
           $newTagVersion = [System.Version]::new($versionParsed.Major, $versionParsed.Minor, $versionParsed.Build + 1)
           $newTagVersionString = $newTagVersion.ToString()
           Write-Output "tag=$($newTagVersionString)" >> $env:GITHUB_OUTPUT
