@@ -20,7 +20,7 @@ jobs:
         shell: pwsh
         run: |
           Set-Location -Path "/home/runner/work/MultiNet/MultiNet/"
-          $describedTag = git describe --tags
+          $describedTag = git tag | Sort-Object -Descending | Select-Object -First 1
           # Need to hunt if it's a tag + commits or just tag
           $versionString = [string]::Empty
           if ($describedTag.Contains("-"))
