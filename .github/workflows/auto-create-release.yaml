@@ -20,21 +20,16 @@ jobs:
         shell: pwsh
         run: |
           Set-Location -Path "/home/runner/work/MultiNet/MultiNet/"
-          $describedTag = git tag | Sort-Object -Descending | Select-Object -First 1
-          # Need to hunt if it's a tag + commits or just tag
-          $versionString = [string]::Empty
-          if ($describedTag.Contains("-"))
+          $symVerTags = @()
+          $describedTags = git tag | Sort-Object -Descending
+          foreach($tag in $describedTag)
           {
-            $versionString = $describedTag.Substring(0, $describedTag.IndexOf("-"))
+            $symVerTags += [System.Version]::Parse($tag)
           }
-          else
-          {
-            $versionString = $describedTag.ToString()
-          }
-          
-          $versionParsed = [System.Version]::Parse($versionString)          
+          $versionParsed = $symVerTags | Sort-Object -Descending | Select-Object -First 1       
           $newTagVersion = [System.Version]::new($versionParsed.Major, $versionParsed.Minor, $versionParsed.Build + 1)
           $newTagVersionString = $newTagVersion.ToString()
+          Write-Host "New Tag: $($newTagVersionString)"
           Write-Output "tag=$($newTagVersionString)" >> $env:GITHUB_OUTPUT
       - name: Create Tag Release
         env:
