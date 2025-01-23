@@ -22,7 +22,7 @@ jobs:
           Set-Location -Path "/home/runner/work/MultiNet/MultiNet/"
           $symVerTags = @()
           $describedTags = git tag | Sort-Object -Descending
-          foreach($tag in $describedTag)
+          foreach($tag in $describedTags)
           {
             $symVerTags += [System.Version]::Parse($tag)
           }
