@@ -5,7 +5,18 @@ ENV PATH=$PATH:/root/.dotnet
 RUN apt-get update \
     && apt-get dist-upgrade -y \
     && apt-get upgrade -y \
-    && apt-get install ca-certificates libc6 libgcc-s1 libgssapi-krb5-2 liblttng-ust1 libssl3 libstdc++6 libunwind8 tzdata wget zlib1g -y \
+    && apt-get install -y \
+        ca-certificates \
+        libc6 \
+        libgcc-s1 \
+        libgssapi-krb5-2 \
+        liblttng-ust1 \
+        libssl3 \
+        libstdc++6 \
+        libunwind8 \
+        tzdata \
+        wget \
+        zlib1g \
     && wget http://se.archive.ubuntu.com/ubuntu/pool/main/i/icu/libicu70_70.1-2_amd64.deb \
     && dpkg -i libicu70_70.1-2_amd64.deb \
     && rm -f libicu70_70.1-2_amd64.deb \
