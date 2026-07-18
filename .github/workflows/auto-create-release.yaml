@@ -31,18 +31,12 @@ jobs:
           $newTagVersionString = $newTagVersion.ToString()
           Write-Host "New Tag: $($newTagVersionString)"
           Write-Output "tag=$($newTagVersionString)" >> $env:GITHUB_OUTPUT
-      - name: Create Tag Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ steps.calculatenewtag.outputs.tag }}
-        run: |
-          gh release create "$tag" --repo="$GITHUB_REPOSITORY" --title="${GITHUB_REPOSITORY#*/} ${tag#v}" --generate-notes
       - name: "Set current date as env variable"
         run: |
           echo "builddate=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
         id: dateversion
       - name: Build Docker Image
-        run: docker build -t felsokning/multinet:${{ github.sha }} .
+        run: docker build --platform linux/amd64,linux/arm64 -t felsokning/multinet:${{ github.sha }} .
       - name: Tag Docker Image (Git Tag)
         run: docker tag felsokning/multinet:${{ github.sha }} felsokning/multinet:${{ steps.calculatenewtag.outputs.tag }}
       - name: Tag Docker Image (Date)
@@ -56,3 +50,10 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Publish to DockerHub
         run: docker push --all-tags felsokning/multinet
+        # Only publish tag after the release has been created and pushed successfully to DockerHub, otherwise the release will be created but the tag will not be available in DockerHub.
+      - name: Create Tag Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ steps.calculatenewtag.outputs.tag }}
+        run: |
+          gh release create "$tag" --repo="$GITHUB_REPOSITORY" --title="${GITHUB_REPOSITORY#*/} ${tag#v}" --generate-notes
