@@ -25,6 +25,8 @@ jobs:
                 "containerd-snapshotter": true
               }
             }
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
       - name: Calculate New Tag
         id: calculatenewtag
         shell: pwsh
