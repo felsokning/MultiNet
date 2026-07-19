@@ -11,5 +11,17 @@ jobs:
     steps:
     - name: Check out code
       uses: actions/checkout@v3
+    - name: Set up Docker
+      uses: docker/setup-docker-action@v5
+      with:
+        daemon-config: |
+          {
+            "debug": true,
+            "features": {
+              "containerd-snapshotter": true
+            }
+          }
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v4
     - name: Build Docker Image
-      run: docker build -t felsokning/multinet:${{ github.sha }} .
+      run: docker build --platform linux/amd64,linux/arm64 -t felsokning/multinet:${{ github.sha }} .
