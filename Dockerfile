@@ -17,9 +17,18 @@ RUN apt-get update \
         tzdata \
         wget \
         zlib1g \
-    && wget http://se.archive.ubuntu.com/ubuntu/pool/main/i/icu/libicu70_70.1-2_amd64.deb \
-    && dpkg -i libicu70_70.1-2_amd64.deb \
-    && rm -f libicu70_70.1-2_amd64.deb \
+    && ARCH=$(dpkg --print-architecture) \
+    && if [ "$ARCH" = "amd64" ]; then \
+        wget -o libicu70_70.1-2_amd64.deb http://se.archive.ubuntu.com/ubuntu/pool/main/i/icu/libicu70_70.1-2_amd64.deb; \
+        dpkg -i libicu70_70.1-2_amd64.deb; \
+        rm -f libicu70_70.1-2_amd64.deb; \
+    elif [ "$ARCH" = "arm64" ]; then \
+        wget -o libicu70_70.1-2_arm64.deb http://ports.ubuntu.com/pool/main/i/icu/libicu70_70.1-2ubuntu1_arm64.deb; \
+        dpkg -i libicu70_70.1-2_arm64.deb; \
+        rm -f libicu70_70.1-2_arm64.deb; \
+    else \
+        echo "Unsupported architecture: $ARCH"; exit 1; \
+    fi \
     && wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
     && dpkg -i packages-microsoft-prod.deb \
     && rm packages-microsoft-prod.deb \
