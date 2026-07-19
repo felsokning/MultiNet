@@ -1,6 +1,9 @@
 # MultiNet
 MultiNet is a Docker Container project, intended to provide legacy and current .NET versions in a Docker Container for use in building, testing, and publishing libraries and executables.
 
+# Architectures Supported
+As of `7.0.0`, both `amd64` and `arm64` are supported.
+
 # Docker Container
 The Docker Container that is built as a result of the [Dockerfile](https://github.com/felsokning/MultiNet/blob/main/Dockerfile) can be found [here](https://hub.docker.com/r/felsokning/multinet).
 
