@@ -10,6 +10,7 @@ RUN apt-get update \
         libc6 \
         libgcc-s1 \
         libgssapi-krb5-2 \
+        libicu78 \
         liblttng-ust1 \
         libssl3 \
         libstdc++6 \
@@ -19,13 +20,13 @@ RUN apt-get update \
         zlib1g \
     && ARCH=$(dpkg --print-architecture) \
     && if [ "$ARCH" = "amd64" ]; then \
-        wget -o libicu70_70.1-2_amd64.deb http://se.archive.ubuntu.com/ubuntu/pool/main/i/icu/libicu70_70.1-2_amd64.deb; \
-        dpkg -i libicu70_70.1-2_amd64.deb; \
-        rm -f libicu70_70.1-2_amd64.deb; \
+        wget -o libicu76_76.1-4_amd64.deb http://ftp.se.debian.org/debian/pool/main/i/icu/libicu76_76.1-4_amd64.deb; \
+        dpkg -i libicu76_76.1-4_amd64.deb; \
+        rm -f libicu76_76.1-4_amd64.deb; \
     elif [ "$ARCH" = "arm64" ]; then \
-        wget -o libicu70_70.1-2_arm64.deb http://ports.ubuntu.com/pool/main/i/icu/libicu70_70.1-2ubuntu1_arm64.deb; \
-        dpkg -i libicu70_70.1-2_arm64.deb; \
-        rm -f libicu70_70.1-2_arm64.deb; \
+        wget -o libicu76_76.1-4_arm64.deb http://ftp.se.debian.org/debian/pool/main/i/icu/libicu76_76.1-4_arm64.deb; \
+        dpkg -i libicu76_76.1-4_arm64.deb; \
+        rm -f libicu76_76.1-4_arm64.deb; \
     else \
         echo "Unsupported architecture: $ARCH"; exit 1; \
     fi \
